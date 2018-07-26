@@ -32,7 +32,7 @@ class BannerWidget extends StatefulWidget{
     Key key,
     @required this.children,
     this.initIndex = 0,
-    this.intervalDuration = const Duration(seconds: 1),
+    this.intervalDuration = const Duration(seconds: 5),
     this.animationDuration = const Duration(milliseconds: 500),
     this.indicatorBuilder,
     this.indicatorNormal,
@@ -43,7 +43,7 @@ class BannerWidget extends StatefulWidget{
     this.autoRolling = true,
     this.curve = Curves.easeInOut,
     this.onPageChanged,
-    this.log = true,
+    this.log = false,
   }):
         assert(children?.isNotEmpty ?? true),
         assert(null != indicatorMargin),

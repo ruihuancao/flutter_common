@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common/page/platform_channel.dart';
-import 'package:flutter_common/widget/banner/banner.dart';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 
+
+import 'package:flutter_common/components/platform_channel_test.dart';
+import 'package:flutter_common/components/banner_test.dart';
+import 'package:flutter_common/components/settings_test.dart';
+import 'package:flutter_common/setting/setting.dart';
+/// 开发测试页面
 class DevelopPage extends StatelessWidget {
 
   final Color color;
+  final Settings settings;
+  final Function settingUpdate;
 
-  DevelopPage(this.color);
+  DevelopPage({this.color, this.settings, this.settingUpdate});
 
   @override
   Widget build(BuildContext context) {
     // 设置状态栏
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("测试代码"),
@@ -21,18 +26,11 @@ class DevelopPage extends StatelessWidget {
       ),
       body: Container(
         color: color,
-        child: Column(
+        child: ListView(
           children: <Widget>[
             BannerTest(),
-            new RaisedButton(
-              child: new Text("打开平台代码调用"),
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PlatformChannelPage()),
-                );
-              },
-            ),
+            PlatformChannelTest(),
+            SettingsTest(settings, settingUpdate),
           ],
         ),
       ),
@@ -41,44 +39,7 @@ class DevelopPage extends StatelessWidget {
 }
 
 // banner
-class BannerTest extends StatelessWidget {
 
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      alignment: Alignment.center,
-      height: 256.0,
-      child: BannerWidget(
-          children: [
-            Container(
-              color: Colors.red,
-              child: Center(
-                child: new Text("1"),
-              ),
-            ),
-            Container(
-              color: Colors.blue,
-              child: Center(
-                child: new Text("2"),
-              ),
-            ),
-            Container(
-              color: Colors.green,
-              child: Center(
-                child: new Text("3"),
-              ),
-            ),
-            Container(
-              color: Colors.yellow,
-              child: Center(
-                child: new Text("4"),
-              ),
-            )
-          ]
-      ),
-    );
-  }
-}
 
 // 毛玻璃效果
 class FrostedDemo extends StatelessWidget {

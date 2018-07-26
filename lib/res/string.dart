@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 // String 配置
 class AppStrings{
@@ -7,15 +6,9 @@ class AppStrings{
   static String menu_collection = "收藏";
   static String menu_person = "我的";
   static String menu_tool = "工具";
+
+  static String tip_empty = "这里什么都没有";
+  static String tip_error = "页面加载出错,点击屏幕重新加载";
 }
 
-// 图标字体库
-class AppIcons{
 
-  //第三方图标字体包名称
-  static const String FONT_FAMILY_CUSTOM ='CUSTOM';
-
-  //第三方图标
-  static const IconData archive = const IconData(0xf187 ,fontFamily: FONT_FAMILY_CUSTOM);
-
-}

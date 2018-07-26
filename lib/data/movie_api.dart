@@ -17,6 +17,7 @@ void main() async{
 //  List<Movie> listMovies = await getPageListMovie(list[0]);
 //  print(json.encode(listMovies));
 //  print("-----------------------------------------------------------------");
+//  获取播放链接
 //  var detail = await getMovieDetail(listMovies[0].link);
 //  print(json.encode(detail));
 
@@ -31,7 +32,7 @@ void main() async{
 //
 }
 
-
+/// 获取当前类型下有多少页，返回每页链接
 Future<List<String>> getAllPageLink({int type}) async{
   List<String> results = [];
   String url = "https://www.okzyw.com/?m=vod-type-id-$type.html";
@@ -52,6 +53,7 @@ Future<List<String>> getAllPageLink({int type}) async{
   return results;
 }
 
+/// 获取页面的详情，包括播放链接
 Future<Map<String, List<String>>> getMovieDetail(String url) async{
   try{
     Map<String, String> headers = {
@@ -69,7 +71,7 @@ Future<Map<String, List<String>>> getMovieDetail(String url) async{
   }
 }
 
-
+/// 解析详情页面数据
 Map<String, List<String>> parseDetail(String html){
   Map<String, List<String>> results ={};
   var document = parse(html);
@@ -85,52 +87,7 @@ Map<String, List<String>> parseDetail(String html){
   return results;
 }
 
-
-List<Movie> parseList(String html){
-  var document = parse(html);
-  List<Element> vb = document.getElementsByClassName("xing_vb");
-  List<Element> tt = vb[0].getElementsByClassName("tt");
-  List<Movie> list = [];
-  String host= "https://okzyw.com";
-  for(int i =0; i<tt.length; i++){
-    Element element = tt[i].parent;
-    Element vb4 = element.getElementsByClassName("xing_vb4")[0];
-    Element vb5 = element.getElementsByClassName("xing_vb5")[0];
-    Element vb6 = element.getElementsByClassName("xing_vb6")[0];
-    String link = host+vb4.getElementsByTagName("a")[0].attributes['href'];
-    String name = vb4.text;
-    String category = vb5.text;
-    String date = vb6.text;
-    Movie movie = new Movie(name: name, link: link, category: category, date: date);
-    list.add(movie);
-  }
-  return list;
-}
-
-Future<List<Movie>> searchMovie(String key) async{
-  try{
-    String url = "https://okzyw.com/index.php?m=vod-search";
-    Map<String, String> headers = {
-      "User-Agent" :"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"
-    };
-
-    Map<String, String> body = {
-      "wd": key,
-      "submit":"search"
-    };
-    final response  = await http.post(url, headers: headers, body: body);
-    if(response.statusCode == 200){
-      return parseList(response.body);
-    }else{
-      return null;
-    }
-  }catch(e){
-    print("has error");
-    return null;
-  }
-}
-
-
+/// 获取关键词搜索结果有多少页，返回每页链接
 Future<List<String>> getSearchPageLink(String key) async{
   String url = "https://okzyw.com/index.php?m=vod-search";
   Map<String, String> headers = {
@@ -158,7 +115,7 @@ Future<List<String>> getSearchPageLink(String key) async{
   return results;
 }
 
-
+/// 从列表页面获取电影
 Future<List<Movie>> getPageListMovie(String url) async{
   try{
     Map<String, String> headers = {
@@ -175,6 +132,28 @@ Future<List<Movie>> getPageListMovie(String url) async{
     print("has error");
     return null;
   }
+}
+
+/// 解析列表页面数据
+List<Movie> parseList(String html){
+  var document = parse(html);
+  List<Element> vb = document.getElementsByClassName("xing_vb");
+  List<Element> tt = vb[0].getElementsByClassName("tt");
+  List<Movie> list = [];
+  String host= "https://okzyw.com";
+  for(int i =0; i<tt.length; i++){
+    Element element = tt[i].parent;
+    Element vb4 = element.getElementsByClassName("xing_vb4")[0];
+    Element vb5 = element.getElementsByClassName("xing_vb5")[0];
+    Element vb6 = element.getElementsByClassName("xing_vb6")[0];
+    String link = host+vb4.getElementsByTagName("a")[0].attributes['href'];
+    String name = vb4.text;
+    String category = vb5.text;
+    String date = vb6.text;
+    Movie movie = new Movie(name: name, link: link, category: category, date: date);
+    list.add(movie);
+  }
+  return list;
 }
 
 

@@ -37,8 +37,8 @@ class _AppState extends State<App> {
   }
 
   /// 设置配置变更
-  void handleOptionsChange(Settings newSettings) {
-    Settings.update(newSettings);
+  void settingUpdate(Settings newSettings) async{
+    await Settings.update(newSettings);
     setState(() {
       settings = newSettings;
     });
@@ -63,8 +63,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return new MaterialApp(
         theme: settings.theme.data.copyWith(platform: settings.platform),
-        debugShowCheckedModeBanner: false,
-        showPerformanceOverlay: false,
+        debugShowCheckedModeBanner: true,
         builder: (BuildContext context, Widget child) {
           return new Directionality(
             // ltr lrt 支持
@@ -74,7 +73,7 @@ class _AppState extends State<App> {
           );
         },
         home: new Scaffold(
-          body: Home()
+          body: Home(settings: settings, settingUpdate: settingUpdate,)
         )
     );
   }

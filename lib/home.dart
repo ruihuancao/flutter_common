@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_common/res/string.dart';
-import 'package:flutter_common/page/develop.dart';
-import 'package:flutter_common/page/platform_channel.dart';
+import 'package:flutter_common/pages/develop.dart';
+import 'package:flutter_common/setting/setting.dart';
 
 /// 主页面
 class Home extends StatefulWidget {
 
   const Home({
     Key key,
+    this.settings,
+    this.settingUpdate
   }) : super(key: key);
+
+  final Settings settings;
+  final Function settingUpdate;
 
   @override
   _HomeState createState() => new _HomeState();
@@ -26,10 +32,10 @@ class _HomeState extends State<Home>{
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
-          new DevelopPage(Colors.blue),
-          new DevelopPage(Colors.red),
-          new DevelopPage(Colors.green),
-          new DevelopPage(Colors.grey),
+          new DevelopPage(color: Colors.blue, settings: widget.settings, settingUpdate: widget.settingUpdate,),
+          new DevelopPage(color: Colors.red, settings: widget.settings, settingUpdate: widget.settingUpdate,),
+          new DevelopPage(color: Colors.green, settings: widget.settings, settingUpdate: widget.settingUpdate,),
+          new DevelopPage(color: Colors.yellow, settings: widget.settings, settingUpdate: widget.settingUpdate,),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

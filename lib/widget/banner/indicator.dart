@@ -55,7 +55,7 @@ class Indicator extends StatelessWidget {
           height: 40.0,
           padding: new EdgeInsets.symmetric(horizontal: 16.0),
           color: Colors.black45,
-          alignment: Alignment.centerRight,
+          alignment: Alignment.center,
           child: smallContainer,
         ),
       ),

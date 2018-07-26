@@ -6,6 +6,22 @@ class AppTheme {
 
   final String name;
   final ThemeData data;
+
+  @override
+  bool operator ==(dynamic other) {
+    if (runtimeType != other.runtimeType)
+      return false;
+    final AppTheme typedOther = other;
+    return name == typedOther.name
+        && data == typedOther.data;
+  }
+
+  @override
+  int get hashCode => hashValues(
+    name,
+    data,
+  );
+
 }
 
 final AppTheme kDarkTheme = new AppTheme._('Dark', _buildDarkTheme());
@@ -18,6 +34,14 @@ TextTheme _buildTextTheme(TextTheme base) {
       //fontFamily: 'GoogleSans',
     ),
   );
+}
+
+AppTheme getThemeByName(String name){
+  if(name == "Dark"){
+    return kDarkTheme;
+  }else{
+    return kLightTheme;
+  }
 }
 
 ThemeData _buildDarkTheme() {
