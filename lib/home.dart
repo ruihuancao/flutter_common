@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_common/res/string.dart';
 import 'package:flutter_common/pages/develop.dart';
 import 'package:flutter_common/setting/setting.dart';
+import 'package:flutter_common/components/empty_component.dart';
 
 /// 主页面
 class Home extends StatefulWidget {
@@ -32,10 +33,10 @@ class _HomeState extends State<Home>{
       body: IndexedStack(
         index: _currentIndex,
         children: <Widget>[
+          EmptyComponent(),
+          EmptyComponent(),
+          EmptyComponent(),
           new DevelopPage(color: Colors.blue, settings: widget.settings, settingUpdate: widget.settingUpdate,),
-          new DevelopPage(color: Colors.red, settings: widget.settings, settingUpdate: widget.settingUpdate,),
-          new DevelopPage(color: Colors.green, settings: widget.settings, settingUpdate: widget.settingUpdate,),
-          new DevelopPage(color: Colors.yellow, settings: widget.settings, settingUpdate: widget.settingUpdate,),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

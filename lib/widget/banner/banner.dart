@@ -19,14 +19,12 @@ class BannerWidget extends StatefulWidget{
   final Widget indicatorSelected;
   //the margin of between indicator items
   final double indicatorMargin;
-  final PageController controller;
   //whether cycyle rolling
   final bool cycleRolling;
   //whether auto rolling
   final bool autoRolling;
   final Curve curve;
   final ValueChanged onPageChanged;
-  final bool log;
 
   BannerWidget({
     Key key,
@@ -38,12 +36,10 @@ class BannerWidget extends StatefulWidget{
     this.indicatorNormal,
     this.indicatorSelected,
     this.indicatorMargin = 5.0,
-    this.controller,
     this.cycleRolling = true,
     this.autoRolling = true,
     this.curve = Curves.easeInOut,
     this.onPageChanged,
-    this.log = false,
   }):
         assert(children?.isNotEmpty ?? true),
         assert(null != indicatorMargin),
@@ -56,7 +52,6 @@ class BannerWidget extends StatefulWidget{
   _BannerViewState createState() => new _BannerViewState();
 }
 
-/// Created by yangxiaowei
 class _BannerViewState extends State<BannerWidget> {
 
   List<Widget> _originBanners = [];
@@ -66,12 +61,13 @@ class _BannerViewState extends State<BannerWidget> {
   int _currentIndex = 0;
   int _seriesUserScrollRecordCount = 0;
 
+  Timer _timer;
+  bool _canceledByManual = false;
+
 
   @override
   void initState() {
     super.initState();
-    _Logger.debug = widget.log ?? true;
-
     this._originBanners = widget.children;
     this._banners = this._banners..addAll(this._originBanners);
 
@@ -87,12 +83,11 @@ class _BannerViewState extends State<BannerWidget> {
     }
 
     this._duration = widget.intervalDuration;
-    this._pageController = widget.controller ?? PageController(initialPage: this._currentIndex);
+    this._pageController = PageController(initialPage: this._currentIndex);
 
     this._nextBannerTask();
   }
 
-  Timer _timer;
   void _nextBannerTask() {
     if(!mounted) {
       return;
@@ -113,8 +108,6 @@ class _BannerViewState extends State<BannerWidget> {
     });
   }
 
-  bool _canceledByManual = false;
-  /// [manual] 是否手动停止
   void _cancel({bool manual = false}) {
     _timer?.cancel();
     if(manual) {
@@ -136,7 +129,7 @@ class _BannerViewState extends State<BannerWidget> {
     if(0 == this._currentIndex) {
       this._pageController.jumpToPage(this._currentIndex);
       this._nextBannerTask();
-      setState(() {});
+      //setState(() {});
     }else{
       this._pageController.animateToPage(
         this._currentIndex,
@@ -152,7 +145,6 @@ class _BannerViewState extends State<BannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return this._generateBody();
   }
 
@@ -173,7 +165,6 @@ class _BannerViewState extends State<BannerWidget> {
         return new GestureDetector(
           child: widget,
           onTapDown: (detail) {
-            _Logger.d(TAG, '**********   onTapDown');
             this._cancel(manual: true);
           },
         );
@@ -181,7 +172,6 @@ class _BannerViewState extends State<BannerWidget> {
       controller: this._pageController,
       itemCount: this._banners.length,
       onPageChanged: (index) {
-        _Logger.d(TAG, '**********   changed  index: $index  cu: $_currentIndex');
         this._currentIndex = index;
         if(!(this._timer?.isActive ?? false)) {
           this._nextBannerTask();
@@ -231,15 +221,12 @@ class _BannerViewState extends State<BannerWidget> {
       var left = page == .0 ? .0 : page % (page.round());
 
       if(_seriesUserScrollRecordCount == 0) {
-        _Logger.d(TAG, '**********   ^^^^  用户手动滑动开始');
         this._cancel(manual: true);
       }
       if(depth == 0) {
-        _Logger.d(TAG, '** countP: $_seriesUserScrollRecordCount  page: $page  , left: $left');
 
         if(left == 0) {
           if (_seriesUserScrollRecordCount != 0) {
-            _Logger.d(TAG, '**********   ^^^^  用户手动滑动结束, at edge: ${pm.atEdge}');
             setState(() {
               _seriesUserScrollRecordCount = 0;
               _canceledByManual = false;
@@ -258,7 +245,6 @@ class _BannerViewState extends State<BannerWidget> {
     void _handleOtherScroll(ScrollUpdateNotification notification) {
       ScrollUpdateNotification sn = notification;
       if(widget.cycleRolling && sn.metrics.atEdge) {
-        _Logger.d(TAG, '>>>   had at edge  $_currentIndex');
         if(this._canceledByManual) {
           return;
         }
@@ -295,14 +281,5 @@ class _BannerViewState extends State<BannerWidget> {
     _pageController?.dispose();
     _cancel();
     super.dispose();
-  }
-}
-
-class _Logger {
-  static bool debug = true;
-  static void d(String tag, String msg) {
-    if(debug) {
-      print('$tag - $msg');
-    }
   }
 }
