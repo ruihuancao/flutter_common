@@ -6,7 +6,8 @@ import 'package:flutter_common/components/banner_test.dart';
 import 'package:flutter_common/components/settings_test.dart';
 import 'package:flutter_common/setting/setting.dart';
 import 'package:flutter_common/components/test.dart';
-import 'package:flutter_common/pages/video.dart';
+import 'package:flutter_common/widget/video/simple_video_player.dart';
+
 /// 开发测试页面
 class DevelopPage extends StatelessWidget {
   final _SearchDemoSearchDelegate _delegate = new _SearchDemoSearchDelegate();
@@ -41,16 +42,12 @@ class DevelopPage extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             BannerTest(),
-            Container(
-              height: 300.0,
-              child: NetVideo('http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4'),
-            ),
             PlatformChannelTest(),
             SettingsTest(settings, settingUpdate),
             TestItem(text: "全屏播放视频", result: "", onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => VideoNetFullPage('http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4',)),
+                MaterialPageRoute(builder: (context) => VideoFullPage('https://youku.cdn-56.com/20180622/3878_d3968706/index.m3u8',)),
               );
             }),
           ],
