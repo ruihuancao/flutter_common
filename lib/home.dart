@@ -4,7 +4,7 @@ import 'package:flutter_common/res/string.dart';
 import 'package:flutter_common/pages/develop.dart';
 import 'package:flutter_common/setting/setting.dart';
 import 'package:flutter_common/components/empty_component.dart';
-
+import 'pages/search.dart';
 /// 主页面
 class Home extends StatefulWidget {
 
@@ -35,8 +35,8 @@ class _HomeState extends State<Home>{
         children: <Widget>[
           EmptyComponent(),
           EmptyComponent(),
-          EmptyComponent(),
           new DevelopPage(color: Colors.blue, settings: widget.settings, settingUpdate: widget.settingUpdate,),
+          SearchPage()
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';
 
 import 'package:flutter_common/components/platform_channel_test.dart';
 import 'package:flutter_common/components/banner_test.dart';
 import 'package:flutter_common/components/settings_test.dart';
 import 'package:flutter_common/setting/setting.dart';
 import 'package:flutter_common/components/test.dart';
-import 'package:flutter_common/widget/video/simple_video_player.dart';
 
 /// 开发测试页面
 class DevelopPage extends StatelessWidget {
@@ -58,7 +58,6 @@ class DevelopPage extends StatelessWidget {
 }
 
 
-// banner
 class _SearchDemoSearchDelegate extends SearchDelegate<int> {
   final List<String> _history = <String>["ada", "bfd", "dsd", "tes", "dev"];
 
